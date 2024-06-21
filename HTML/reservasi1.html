@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyDoctor - Reservasi</title>
+    <link rel="stylesheet" href="../CSS/reservasi1.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+        <div class="logo">MYDOCTOR</div>
+        <form class="search-form">
+            <input type="text" placeholder="Cari lokasi atau spesialisasi dokter terdekat">
+            <button type="submit">Cari</button>
+        </form>
+    </header>
+
+    <div id="mapid"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const mymap = L.map("mapid").setView([-6.2088, 106.8456], 12);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution:
+                'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 19,
+        }).addTo(mymap);
+
+        const hospitals = [
+            {
+                lat: -6.1461,
+                lng: 106.8166,
+                name: "RS Pelni Petamburan",
+                status: "verified",
+                ika_score: 55,
+                ikaCategories: "Lightly Polluted",
+                iconUrl:
+                    "../ASSETS/location-check-3",
+                lastUpdate: "11/11/2024 23:23",
+                description:
+                    "RS Pelni Petamburan provides medical services in West Jakarta, serving the community since 1980.",
+                reporter_name: null,
+            },
+            // Add more hospitals as needed
+        ];
+
+        function createCustomIcon(url) {
+            return L.icon({
+                iconUrl: url,
+                iconSize: [38, 38],
+                iconAnchor: [19, 38],
+                popupAnchor: [0, -38],
+            });
+        }
+
+        hospitals.forEach(function (hospital) {
+            const marker = L.marker([hospital.lat, hospital.lng], {
+                icon: createCustomIcon(hospital.iconUrl),
+            }).addTo(mymap);
+
+            marker
+                .bindPopup(
+                    "<b>Hospital:</b> " +
+                    hospital.name +
+                    "<br>" +
+                    "<b>Description:</b> " +
+                    hospital.description
+                )
+                .openPopup();
+        });
+    </script>
+</body>
+</html>
